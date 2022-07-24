@@ -5,6 +5,7 @@ import android.widget.EditText
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.hasErrorText
@@ -29,6 +30,24 @@ class ProdutoFragmentTest{
 
         onView(withId(R.id.etDetalheProduto))
             .check(matches(hasErrorText("Por favor preencha o campo de detalhe")))
+    }
+
+    @Test
+    fun showErrorWhenOnlyEditTextDetalheIsEmpty(){
+        val scenario = launchFragmentInContainer<ProdutoFragment>()
+        onView(withId(R.id.etNomeProduto)).perform(typeText("Alguma coisa"))
+        onView(withId(R.id.bvAdicionar)).perform(click())
+
+        onView(withId(R.id.etDetalheProduto))
+            .check(matches(hasErrorText("Por favor preencha o campo de detalhe")))
+
+        onView(withId(R.id.etNomeProduto))
+            .check(matches(hasNoErrorText()))
+    }
+
+    @Test
+    fun showErrorWhenOnlyEditTextNomeIsEmpty(){
+
     }
 
     fun hasNoErrorText(): BoundedMatcher<View?, EditText> {
