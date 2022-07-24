@@ -47,7 +47,15 @@ class ProdutoFragmentTest{
 
     @Test
     fun showErrorWhenOnlyEditTextNomeIsEmpty(){
+        val scenario = launchFragmentInContainer<ProdutoFragment>()
+        onView(withId(R.id.etDetalheProduto)).perform(typeText("Alguma coisa"))
+        onView(withId(R.id.bvAdicionar)).perform(click())
 
+        onView(withId(R.id.etNomeProduto))
+            .check(matches(hasErrorText("Por favor preencha o campo de nome")))
+
+        onView(withId(R.id.etDetalheProduto))
+            .check(matches(hasNoErrorText()))
     }
 
     fun hasNoErrorText(): BoundedMatcher<View?, EditText> {
